@@ -4,14 +4,15 @@
  */
 
 const router = require('koa-router')()
-const { isExist } = require('../../controllers/user')
+const { isExist, register } = require('../../controllers/user')
 
 //  加前缀
 router.prefix('/api/user')
 
 // 注册路由
 router.post('/register', async (ctx, next) => {
-
+    const { userName, password, gender } = ctx.request.body
+    ctx.body = await register({userName, password, gender})
 })
 
 router.post('/isExist', async (ctx, next) => {

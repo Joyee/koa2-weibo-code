@@ -29,7 +29,7 @@ onerror(app, onerrorConf)
 
 // middlewares
 app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
+  enableTypes: ['json', 'form', 'text']
 }))
 app.use(json())
 app.use(logger())
@@ -50,16 +50,16 @@ app.use(views(__dirname + '/views', {
 // session 配置
 app.keys = [SESSION_SECRET_KEY]
 app.use(session({
-    key: 'weibo.sid', // cookie name 默认是 `koa.sid`
-    prefix: 'weibo:sess:', // redis key 的前缀，默认是 `koa:sess:`
-    cookie: {
-        path: '/',
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000  // 单位 ms
-    },
-    store: redisStore({
-        all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
-    })
+  key: 'weibo.sid', // cookie name 默认是 `koa.sid`
+  prefix: 'weibo:sess:', // redis key 的前缀，默认是 `koa:sess:`
+  cookie: {
+    path: '/',
+    httpOnly: true,
+    maxAge: 24 * 60 * 60 * 1000  // 单位 ms
+  },
+  store: redisStore({
+    all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
+  })
 }))
 
 // routes
