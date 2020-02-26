@@ -65,8 +65,43 @@ async function deleteUser(userName) {
     return result > 0
 }
 
+async function updateUser(
+    { newNickName, newPassword, newCity, newAvatar },
+    { userName, password }
+) {
+    // 拼接修改内容
+    let updateData = {}
+    if (newNickName) {
+        updateData.nickName = newNickName
+    }
+    if (newPassword) {
+        updateData.password = newPassword
+    }
+    if (newCity) {
+        updateData.city = newCity
+    }
+    if (newAvatar) {
+        updateData.avatar = newAvatar
+    }
+    // 拼接查询条件
+    let whereOpt = {
+        userName
+    }
+
+    if (password) {
+        whereOpt.password = password
+    }
+    // 执行修改
+    const result = await User.update(updateData, {
+        where: whereOpt
+    })
+
+    return result[0] > 0
+}
+
 module.exports = {
     getUserInfo,
     createUser,
     deleteUser,
+    updateUser,
 }
