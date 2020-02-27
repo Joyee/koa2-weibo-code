@@ -1,5 +1,6 @@
 /**
  * @description sequelize 同步数据库
+ * node src/db/sync.js
  */
 
 const seq = require('./seq')

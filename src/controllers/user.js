@@ -70,7 +70,8 @@ async function login(ctx, userName, password) {
         return new ErrorModel(loginFailInfo)
     }
 
-    if (!ctx.session.userInfo) {
+    console.log(ctx.session)
+    if (ctx.session.userInfo == null) {
         ctx.session.userInfo = userInfo
     }
 
