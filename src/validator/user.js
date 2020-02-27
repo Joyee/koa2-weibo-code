@@ -49,8 +49,8 @@ const SCHEMA = {
  * 校验用户数据格式
  * @param {object} data 用户数据
  */
-function userValidate(data = {}) {
+function userValidata(data = {}) {
     return validate(SCHEMA, data)
 }
 
-module.exports = userValidate
+module.exports = userValidata

@@ -5,7 +5,7 @@
 
 const router = require('koa-router')()
 const { isExist, register, login, deleteCurUser, changeInfo, changePassword, logout } = require('../../controllers/user')
-const userValidate = require('../../validator/user')
+const userValidata = require('../../validator/user')
 const { genValidator } = require('../../middlewares/validator')
 const { loginCheck, loginRedirect } = require('../../middlewares/loginChecks')
 const { isTest } = require('../../utils/env')
@@ -13,7 +13,7 @@ const { isTest } = require('../../utils/env')
 router.prefix('/api/user')
 
 // 注册路由
-router.post('/register', genValidator(userValidate), async (ctx, next) => {
+router.post('/register', genValidator(userValidata), async (ctx, next) => {
     const { userName, password, gender } = ctx.request.body
     ctx.body = await register({ userName, password, gender })
 })
@@ -41,14 +41,14 @@ router.post('/delete', loginCheck, async (ctx, next) => {
 })
 
 // 修改个人信息
-router.patch('/changeInfo', loginRedirect, genValidator(userValidate), async (ctx, next) => {
+router.patch('/changeInfo', loginRedirect, genValidator(userValidata), async (ctx, next) => {
     const { nickName, avatar, city } = ctx.request.body
     // controller
     ctx.body = await changeInfo(ctx, { nickName, avatar, city })
 })
 
 // 修改密码
-router.patch('/changePassword', loginRedirect, genValidator(userValidate), async (ctx, next) => {
+router.patch('/changePassword', loginRedirect, genValidator(userValidata), async (ctx, next) => {
     const { password, newPassword } = ctx.request.body
     const { userName } = ctx.session.userInfo
     ctx.body = await changePassword(userName, password, newPassword)
