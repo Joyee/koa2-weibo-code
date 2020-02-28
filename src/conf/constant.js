@@ -3,5 +3,6 @@
  */
 
 module.exports = {
-    DEFAULT_AVATAR: 'http://img.qqzhi.com/uploads/2018-12-03/014504410.jpg'
+    DEFAULT_AVATAR: 'http://img.qqzhi.com/uploads/2018-12-03/014504410.jpg',
+    PAGE_SIZE: 5,
 }
