@@ -27,45 +27,46 @@
     // 按钮，显示和隐藏
     var $btnFollow = $('#btn-follow')
     var $btnUnFollow = $('#btn-un-follow')
-    if (<%= !isMe %>) {
-    // 不是当前用户，则显示“关注”或者“取消关注”
-      if (<%= locals.amIFollowed %>) {
+    // if (<%= !isMe %>) {
+    //   // 不是当前用户，则显示“关注”或者“取消关注”
+    //   if (<%= locals.amIFollowed %>) {
+    //     $btnUnFollow.show()
+    //   } else {
+    //     $btnFollow.show()
+    //   }
+    // }
+
+    // 关注此人
+    $btnFollow.click(function () {
+      ajax.post('/api/profile/follow', {
+        userId: curUserId
+      }, function (err) {
+        if (err) {
+          alert(err)
+          return
+        }
+        // 关注成功
+        $btnFollow.hide()
         $btnUnFollow.show()
-      } else {
-        $btnFollow.show()
-      }
-    }
-
-  // 关注此人
-  $btnFollow.click(function () {
-    ajax.post('/api/profile/follow', {
-      userId: curUserId
-    }, function (err) {
-      if (err) {
-        alert(err)
-        return
-      }
-      // 关注成功
-      $btnFollow.hide()
-      $btnUnFollow.show()
+      })
     })
-  })
 
-  // 取消关注
-  $btnUnFollow.click(function () {
-    if (confirm('确定取消关注？') === false) {
-      return
-    }
-    ajax.post('/api/profile/unFollow', {
-      userId: curUserId
-    }, function (err) {
-      if (err) {
-        alert(err)
+    // 取消关注
+    $btnUnFollow.click(function () {
+      if (confirm('确定取消关注？') === false) {
         return
       }
-      // 取消成功
-      $btnFollow.show()
-      $btnUnFollow.hide()
+      ajax.post('/api/profile/unFollow', {
+        userId: curUserId
+      }, function (err) {
+        if (err) {
+          alert(err)
+          return
+        }
+        // 取消成功
+        $btnFollow.show()
+        $btnUnFollow.hide()
+      })
     })
   })
 </script>
