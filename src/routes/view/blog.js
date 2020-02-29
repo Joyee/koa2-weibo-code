@@ -7,10 +7,12 @@ const { loginRedirect } = require('../../middlewares/loginChecks')
 const { getProfileBlogList } = require('../../controllers/blog-profile')
 const { isExist } = require('../../controllers/user')
 
+// 首页
 router.get('/', loginRedirect, async (ctx, next) => {
   await ctx.render('index', {})
 })
 
+// 个人主页
 router.get('/profile', loginRedirect, async (ctx, next) => {
   const { userName } = ctx.session.userInfo
   ctx.redirect(`/profile/${userName}`)
@@ -52,6 +54,18 @@ router.get('/profile/:userName', loginRedirect, async (ctx, next) => {
     userData: {
       userInfo: curUserInfo,
       isMe
+    }
+  })
+})
+// 广场
+router.get('/square', loginRedirect, async (ctx, next) => {
+  await ctx.render('square', {
+    blogData: {
+      isEmpty,
+      count,
+      blogList,
+      pageSize,
+      pageIndex
     }
   })
 })
