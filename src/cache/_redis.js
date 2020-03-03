@@ -24,3 +24,34 @@ function set(key, val, timeout = 60 * 60) {
   redisClient.set(key, val)
   redisClient.expire(key, timeout)
 }
+
+/**
+ * redis get
+ * @param {string} key 键
+ */
+function get(key) {
+  const promise = new Promise((resolve, reject) => {
+    redisClient.get(key, (err, val) => {
+      if (err) {
+        reject(err)
+        return
+      }
+      if (val === null) {
+        resolve(val)
+        return
+      }
+      try {
+        resolve(JSON.parse(val))
+      } catch (error) {
+        resolve(val)
+      }
+    })
+  })
+
+  return promise
+}
+
+module.exports = {
+  get,
+  set,
+}

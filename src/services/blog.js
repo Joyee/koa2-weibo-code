@@ -59,10 +59,6 @@ async function getBlogListByUser({ userName, pageIndex = 0, pageSize = 10}) {
   }
 }
 
-async function getSquareCacheList({pageIndex = 0, pageIndex = 10}) {
-  
-}
-
 module.exports = {
   creatBlog,
   getBlogListByUser,
