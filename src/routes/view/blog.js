@@ -8,10 +8,45 @@ const { getProfileBlogList } = require('../../controllers/blog-profile')
 const { isExist } = require('../../controllers/user')
 const { getSquareBlogList } = require('../../controllers/blog-square')
 const { getFans, getFollowers } = require('../../controllers/user-relation')
+const { getHomeBlogList } = require('../../controllers/blog-home')
 
 // 首页
 router.get('/', loginRedirect, async (ctx, next) => {
-  await ctx.render('index', {})
+  const userInfo = ctx.session.userInfo
+  const { id: userId } = userInfo
+
+  // 首页第一页数据
+  const result = await getHomeBlogList(userId)
+  const { isEmpty, count, pageIndex, pageSize, blogList } = result.data
+  
+  // 获取粉丝列表
+  // controller
+  const fansResult = await getFans(userId)
+  const { count: fansCount, fansList } = fansResult.data
+
+  // 获取关注人列表
+  const followersResult = await getFollowers(userId)
+  const { count: followersCount, followersList } = followersResult.data
+  await ctx.render('index', {
+    userData: {
+      userInfo,
+      fansData: {
+        count: fansCount,
+        list: fansList
+      },
+      followersData: {
+        count: followersCount,
+        list: followersList
+      }
+    },
+    blogData: {
+      isEmpty,
+      count,
+      pageIndex,
+      pageSize,
+      blogList
+    },
+  })
 })
 
 // 个人主页
