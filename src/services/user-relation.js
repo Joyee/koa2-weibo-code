@@ -7,7 +7,7 @@ const { formatUser } = require('./_format')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 /**
- * 获取关注用户列表
+ * 获取关注用户列表 即获取粉丝
  * @param {number} followerId 被关注用户id
  */
 async function getUsersByFollower(followerId) {
@@ -20,7 +20,10 @@ async function getUsersByFollower(followerId) {
       {
         model: UserRelation,
         where: {
-          followerId
+          followerId,
+          userId: {
+            [Op.ne]: followerId
+          } 
         }
       }
     ]
