@@ -2,7 +2,7 @@
  * @description 微博 @ 关系 controller
  */
 
-const { getAtRelationCount, getAtUserBlogList } = require('../services/at-relation')
+const { getAtRelationCount, getAtUserBlogList, updateAtRelation } = require('../services/at-relation')
 const { SuccessModel } = require('../model/ResModel')
 const { PAGE_SIZE } = require('../conf/constant')
 /**
@@ -18,7 +18,7 @@ async function getAtMeCount(userId) {
 }
 
 async function getAtMeBlogList(userId, pageIndex = 0) {
-  const result = await getAtUserBlogList({userId, pageIndex, pageSize: PAGE_SIZE})
+  const result = await getAtUserBlogList({ userId, pageIndex, pageSize: PAGE_SIZE })
 
   const { count, blogList } = result
 
@@ -31,7 +31,25 @@ async function getAtMeBlogList(userId, pageIndex = 0) {
   })
 }
 
+/**
+ * 标记未已读
+ * @param {number} userId 
+ */
+async function markAsRead(userId) {
+  try {
+    await updateAtRelation(
+      { newIsRead: true },
+      { userId, isRead: false }
+    )
+  } catch (ex) {
+    console.error(ex)
+  }
+
+  // 不需要返回 SuccessModel 或者 ErrorModel
+}
+
 module.exports = {
   getAtMeCount,
   getAtMeBlogList,
+  markAsRead,
 }
