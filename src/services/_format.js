@@ -2,7 +2,7 @@
  * @description 数据格式化
  */
 
-const { DEFAULT_AVATAR } = require('../conf/constant')
+const { DEFAULT_AVATAR, REG_FOR_AT_WHO } = require('../conf/constant')
 const { timeFormat } = require('../utils/dt')
 /**
  * 用户默认头像
@@ -42,6 +42,18 @@ function _formatDBTime(obj) {
 }
 
 /**
+ * 格式化微博内容
+ * @param {Object} obj 微博数据对象
+ */
+function _formatContent(obj) {
+    obj.contentFormat = obj.content
+    obj.contentFormat = obj.contentFormat.replace(REG_FOR_AT_WHO, (matchStr, nickName, userName) => {
+        return `<a href="/profile/${userName}">@${nickName}</a>`
+    })
+
+    return obj
+}
+/**
  * 格式化微博信息
  * @param {Array|Object} list 微博列表或单个微博对象
  */
@@ -50,10 +62,14 @@ function formatBlog(list) {
         return list
     }
     if (list instanceof Array) {
-        return list.map(_formatDBTime)
+        return list.map(_formatDBTime).map(_formatContent)
     }
 
-    return _formatDBTime(list)
+    let result = list
+    result = _formatDBTime(result)
+    result = _formatContent(result)
+
+    return result
 }
 
 module.exports = {

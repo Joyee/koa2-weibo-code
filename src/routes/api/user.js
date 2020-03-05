@@ -9,6 +9,7 @@ const userValidata = require('../../validator/user')
 const { genValidator } = require('../../middlewares/validator')
 const { loginCheck, loginRedirect } = require('../../middlewares/loginChecks')
 const { isTest } = require('../../utils/env')
+const { getFollowers } = require('../../controllers/user-relation')
 //  加前缀
 router.prefix('/api/user')
 
@@ -42,6 +43,7 @@ router.post('/delete', loginCheck, async (ctx, next) => {
 
 // 修改个人信息
 router.patch('/changeInfo', loginRedirect, genValidator(userValidata), async (ctx, next) => {
+    console.log(ctx.request.body)
     const { nickName, avatar, city } = ctx.request.body
     // controller
     ctx.body = await changeInfo(ctx, { nickName, avatar, city })
@@ -57,6 +59,18 @@ router.patch('/changePassword', loginRedirect, genValidator(userValidata), async
 // 退出登录
 router.post('/logout', loginRedirect, async (ctx, next) => {
     ctx.body = await logout(ctx)
+})
+
+// 获取at列表 即关注人列表
+router.get('/getAtList', loginRedirect, async (ctx, next) => {
+    const { id } = ctx.session.userInfo
+    const result = await getFollowers(id)
+    const { followersList } = result.data
+    let list = followersList.map((user) => {
+        return `${user.nickName} - ${user.userName}`
+    })
+
+    ctx.body = list
 })
 
 module.exports = router

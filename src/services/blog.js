@@ -86,6 +86,7 @@ async function getFollowersBlogList({ userId, pageIndex = 0, pageSize = 10}) {
   // 格式化数据
   let blogList = result.rows.map((row) => row.dataValues)
   blogList = formatBlog(blogList)
+  
   blogList = blogList.map((blogItem) => {
     blogItem.user = formatUser(blogItem.user.dataValues)
     return blogItem
